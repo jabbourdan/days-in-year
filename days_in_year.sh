@@ -50,6 +50,42 @@ not_dividable_by(){
     fi
 }
 
+#is_leap()----------------------------#
+#This function test the year's kind ( common or leap)
+#input 		 : 1 number as argument "year (YYYY)"
+#output		 : if wrong input exit 1 ,else if leap mounth returns 0 else returns 1
+#used functions  : is_number() & not_dividable_by() 
+#-------------------------------------#
+is_leap(){
+
+    if [ $# -ne 1 ]
+    then
+        echo argument not correct
+        exit 1
+    fi
+    is_number $@
+
+    local year=$1
+    local Gregrian_cal=1582
+    if [ $year -lt $Gregrian_cal ]
+    then
+        echo Not within the Gregorian calendar period
+        exit 1
+    fi
+    if not_dividable_by $year 4
+    then
+    return 1
+    elif not_dividable_by $year 100
+    then
+    return 0
+    elif not_dividable_by $year 400
+    then
+    return 1
+    else 
+    return 0
+    fi
+}
+
 #mounth_days()----------------------------#
 #This function takes two arguments year and mounth (YYYY,MM) and return the number  -
 # of days in that mounth
